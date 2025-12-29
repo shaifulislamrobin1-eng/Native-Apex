@@ -54,7 +54,7 @@ native-image --no-fallback \
   --initialize-at-build-time \
   --static \
   -march=native
-
+```
 ---
 
 ## 🔼 5. Lifting
