@@ -1,37 +1,39 @@
 # Native-Apex 🚀
-
-**The Universal Static Transpilation Framework for Android-to-Native Binary Evolution**
+### The Universal Static Transpilation Framework for Android-to-Native Binary Evolution
 
 ---
 
 ## 📖 1. The Core Vision: Moving Beyond the Hypervisor
-
-Project **Native-Apex** is a paradigm shift in cross-platform execution. Traditional emulation relies on a "Guest OS" (Android) running on top of a "Host OS" (Windows/Linux), creating a massive performance bottleneck.
+Project **Native-Apex** is a paradigm shift in cross-platform execution. Traditional emulation relies on a "Guest OS" (Android) running on top of a "Host OS" (Windows/Linux), creating a massive performance bottleneck. 
 
 Native-Apex treats the APK not as a package to be "run," but as **intermediate source logic**. We use a Cloud-Factory model to re-target that logic directly to x86_64 silicon, effectively "porting" the app in real-time.
 
 ---
 
 ## 🏭 2. The Cloud-Factory Pipeline & "Resource Fusion"
-
 The core of Native-Apex is the elimination of runtime resource parsing through a technique we call **Resource Fusion**.
 
-### 🔗 JSON Resource Fusion (Direct Logic Embedding)
+### 🔗 Bytecode Metamorphosis (DEX → Class → Java)
+Before synthesis, the APK undergoes a three-stage structural evolution:
+* **DEX-to-Class Reconstitution**: Android Dalvik Executable (DEX) files are re-mapped into standard Java Bytecode (.class) to ensure compatibility with desktop JVM tooling.
+* **Class-to-Java Decompilation**: Bytecode is lifted into high-level Java source code, allowing our AI to perform "Semantic Healing" on the underlying logic.
+* **AOT Synthesis**: The healed Java source is ingested by GraalVM to create a native machine-code binary.
 
-- **XML-to-JSON Transpilation**: Our AI Scout network identifies and converts heavy Android XML layouts into optimized, flat JSON structures.
-- **Semantic Embedding**: This JSON data is embedded directly into the "Healed" Java source code as a static variable.
-- **The Fusion**: By welding the UI data to the logic code, we bypass the Android Asset Manager entirely. The app carries its own "world" inside its binary.
 
-### 🧬 AI-Driven Semantic Healing
 
-- **Source Lifting**: APK bytecode is lifted into high-level Java source.
-- **Symbol Replacement**: AI identifies mobile-specific classes (`android.*`) and replaces them with native OS equivalents (`win32` or `posix.*`).
-- **Formal Verification**: AI runs a symbolic execution check to ensure that the "Healed" code reaches the same logical end-state as the original mobile code.
+### 🧬 JSON Resource Fusion (Direct Logic Embedding)
+* **XML-to-JSON Transpilation**: Our AI Scout network identifies and converts heavy Android XML layouts into optimized, flat JSON structures.
+* **Semantic Embedding**: This JSON data is embedded directly into the "Healed" Java source code as a static variable.
+* **The Fusion**: By welding the UI data to the logic code, we bypass the Android Asset Manager entirely. The app carries its own "world" inside its binary.
+
+### 🧪 AI-Driven Semantic Healing
+* **Source Lifting**: The decompiled Java source is analyzed for mobile-specific dependencies.
+* **Symbol Replacement**: AI identifies mobile-specific classes (`android.*`) and replaces them with native OS equivalents (`win32` or `posix.*`).
+* **Formal Verification**: AI runs a symbolic execution check to ensure that the "Healed" code reaches the same logical end-state as the original mobile code.
 
 ---
 
 ## ⚙️ 3. The Execution Model: Unpack & Execute
-
 To achieve a **Sub-50ms cold start**, Native-Apex moves away from traditional APK installation.
 
 1. **Extraction**: The APK is unzipped into a high-speed temporary directory.
@@ -41,8 +43,17 @@ To achieve a **Sub-50ms cold start**, Native-Apex moves away from traditional AP
 ---
 
 ## 🔒 4. The Hardened GraalVM Build Script
-
 We use **GraalVM Native Image** for AOT (Ahead-of-Time) compilation to bake the fused JSON and healed logic into a single standalone executable.
+
+```bash
+# The "Nitro" Synthesis Command
+native-image --no-fallback \
+  -H:Name=Apex_Core_Binary \
+  -H:+Optimize \
+  -cp android-bridge.jar:app-logic.jar \
+  --initialize-at-build-time \
+  --static \
+  -march=native
 
 ---
 
