@@ -72,14 +72,14 @@ native-image --no-fallback \
 ```
 ---
 
-## 🔼 5. Lifting
+## 🔼 5. Lifting: The QEMU-LLVM Hybrid Pipeline
 
-The most complex part of the system is converting ARM64 native code into x86_64 machine code **without an interpreter**.
+Native-Apex bypasses traditional emulation by using a **Static Binary Translation (SBT)** pipeline. We treat QEMU not as an emulator, but as a high-fidelity instruction lifter.
 
-- **LLVM Bitcode Lifting**: We use static binary analysis to lift `.so` machine code into LLVM IR.
-- **ISA Mapping**: ARM NEON (Mobile Math) → Intel AVX-512 / AMD Zen 4 (PC Math).
-- **Memory Ordering**: AI corrects the ARM "Weak Memory Model" to the x86 "Strong Memory Model" to prevent race-condition crashes.
-- **Syscall Hooking**: We intercept Android-specific kernel calls and route them through our Universal API Shim to Windows NT or Linux Kernel drivers.
+- **TCG Interception**: We utilize the QEMU frontend to disassemble ARM64 `.so` binaries into **Tiny Code Generator (TCG)** micro-ops.
+- **LLVM IR Synthesis**: TCG ops are mapped to LLVM IR, allowing the code to be decoupled from the original hardware state.
+- **Semantic Recovery**: AI-driven analysis identifies high-level patterns (like function calls and loops) that are often lost during raw disassembly.
+- **Native Re-targeting**: The resulting LLVM bitcode is compiled into an optimized x86_64 binary, leveraging **AVX-512** for SIMD operations that were originally ARM NEON.
 
 ---
 
