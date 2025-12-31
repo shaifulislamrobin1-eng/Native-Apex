@@ -33,9 +33,24 @@ Before synthesis, the APK undergoes a three-stage structural evolution:
 
 ---
 
-## ⚙️ 3. The Execution Model: Unpack & Execute
-To achieve a **Sub-50ms cold start**, Native-Apex moves away from traditional APK installation.
+## ⚙️ 3. The Execution Model: The Native-Apex Loader
+To achieve a **Sub-50ms cold start**, Native-Apex moves away from traditional APK installation through a specialized binary loader that bridges the gap between ELF and PE structures.
 
+### 🏗️ Technical Architecture Flow
+```text
+[ Android APK ] 
+      |
+      v
+[ Native-Apex Loader ]
+      |-- 1. ELF Header Parser (Identifies entry points)
+      |-- 2. Symbol Mapper (Connects Bionic to Win32)
+      |-- 3. Memory Allocator (VirtualAlloc for ELF segments)
+      v
+[ Windows Native Process ] 
+      |-- Direct DirectX/Vulkan Access
+      |-- 0% VM Latency
+```
+### 🚀 Synthesis & Deployment Steps:
 1. **Extraction**: The APK is unzipped into a high-speed temporary directory.
 2. **Binary Execution**: The synthesized `classes.dex` (which has been evolved into an executable EXE via GraalVM) is launched directly by keeping the rest of the remaining things the same.
 3. **Zero-Latency Loading**: Because the remaining resources (JSON, images) are already mapped or embedded, the app begins execution at native CPU speeds.
